@@ -13,6 +13,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class OfferRepository extends EntityRepository
 {
+
+    /**
+     * Returns a list with all offers from db
+     * Filters can be added for further processing
+     *
+     * @return array
+     */
     public function getOffers() 
     {
         $results = $this->findAll();
@@ -33,6 +40,13 @@ class OfferRepository extends EntityRepository
         return $offers;
     }
 
+    /**
+     * Get one offer based on an offer id
+     *
+     * @param $id
+     *
+     * @return array
+     */
     public function getOffer($id)
     {
         $offer = $this->findOneBy(['id' => $id]);
@@ -49,6 +63,13 @@ class OfferRepository extends EntityRepository
         return $data;
     }
 
+    /**
+     * Saves a new offed to db
+     *
+     * @param $params
+     *
+     * @return int
+     */
     public function saveOffer($params)
     {
         $offer = new Offer();
@@ -60,6 +81,45 @@ class OfferRepository extends EntityRepository
         // Get the Doctrine service and manager
         $em = $this->getEntityManager();
         $em->persist($offer);
+        $em->flush();
+
+        return $offer->getId();
+    }
+
+    /**
+     * Updates an existing offer with new data
+     *
+     * @param $params
+     *
+     * @return mixed
+     */
+    public function updateOffer($params)
+    {
+        $id = $params['id'];
+        $offer = $this->findOneBy(['id' => $id]);
+        $offer->setTitle($params['title']);
+        $offer->setDescription($params['description']);
+        $offer->setEmail($params['email']);
+        $offer->setImageUrl($params['imageUrl']);
+
+        // Get the Doctrine service and manager
+        $em = $this->getEntityManager();
+        $em->persist($offer);
+        $em->flush();
+
+        return $offer->getId();
+    }
+
+    /**
+     * Deletes an offer based on an offer id
+     * 
+     * @param $id
+     */
+    public function deleteOffer($id)
+    {
+        $offer = $this->findOneBy(['id' => $id]);
+        $em = $this->getEntityManager();
+        $em->remove($offer);
         $em->flush();
     }
 }

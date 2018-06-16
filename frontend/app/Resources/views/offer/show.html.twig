@@ -1,4 +1,4 @@
-{% extends 'PetkoparaCrudGeneratorBundle::base.html.twig' %}
+{% extends '@crudgeneratorbundle/base.html.twig' %}
 
 {% block title %}
 {{ parent() }} - offer
@@ -19,6 +19,41 @@
             {{ offer.id }}
         </p>
 
+    </div>
+    <div class="col-md-6">
+        <p><strong>Title</strong></p>
+        <p>
+            {{ offer.title }}
+        </p>
+
+    </div>
+    <div class="col-md-6">
+        <p><strong>Description</strong></p>
+        <p>
+            {{ offer.description }}
+        </p>
+
+    </div>
+    <div class="col-md-6">
+        <p><strong>Email</strong></p>
+        <p>
+            {{ offer.email }}
+        </p>
+
+    </div>
+    <div class="col-md-6">
+        <p><strong>Imageurl</strong></p>
+        <p>
+            {{ offer.imageUrl }}
+        </p>
+
+    </div>
+    <div class="col-md-6">
+        <p><strong>Creationdate</strong></p>
+        <p>
+            {% if offer.creationDate %}{{ offer.creationDate|date('Y-m-d H:i:s') }}{% endif %}
+        </p>
+
     </div></div>
 
 <hr/>
@@ -37,14 +72,6 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         New
     </a>
-    <form action="{{ path('offer_delete', { 'id': offer.id }) }}" method="post" style="display: inline-block">
-        <input type="hidden" name="_method" value="DELETE" />
-        {{ form_widget(delete_form) }}
-        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure');">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Delete
-        </button>
-    </form>
 </div>
 
 

@@ -8,7 +8,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OfferType extends AbstractType
 {
-
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('email')
+            ->add('imageUrl')
+            ->add('creationDate')
+        ;
+    }
+    
     /**
      * @param OptionsResolver $resolver
      */

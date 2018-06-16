@@ -15,6 +15,11 @@ class OfferFilterType extends AbstractType
     {
         $builder
             ->add('id', Filters\NumberFilterType::class)
+            ->add('title', Filters\TextFilterType::class)
+            ->add('description', Filters\TextFilterType::class)
+            ->add('email', Filters\TextFilterType::class)
+            ->add('imageUrl', Filters\TextFilterType::class)
+            ->add('creationDate', Filters\DateTimeFilterType::class)
         
         ;
         $builder->setMethod("GET");

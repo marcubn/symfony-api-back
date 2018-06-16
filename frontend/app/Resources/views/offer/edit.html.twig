@@ -1,4 +1,4 @@
-{% extends 'PetkoparaCrudGeneratorBundle::base.html.twig' %}
+{% extends '@crudgeneratorbundle/base.html.twig' %}
 
 {% block title %}
 {{ parent() }} -  Edit offer
@@ -50,14 +50,6 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         New
     </a>
-    <form action="{{ path('offer_delete', { 'id': offer.id }) }}" method="post" style="display: inline-block">
-        <input type="hidden" name="_method" value="DELETE" />
-        {{ form_widget(delete_form) }}
-        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure');">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            Delete
-        </button>
-    </form>
 </div>
 
 </div>

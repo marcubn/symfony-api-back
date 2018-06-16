@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller\Api\V1;
 
-use AppBundle\Entity\Offer;
 use AppBundle\Repository\OfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,6 +12,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OfferController extends Controller
 {
+
+    /**
+     * @Route("/api/V1/offer/delete")
+     * @Method("DELETE")
+     * @param Request $request
+     *
+     * @return Response
+     * @internal param $id
+     *
+     */
+    public function deleteAction(Request $request)
+    {
+        $params = json_decode($request->getContent(), true);
+        $id = $params['id'];
+        /** @var OfferRepository $offerRepository */
+        $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
+        $offerRepository->deleteOffer($id);
+
+
+        return new Response("Offer was deleted", 200);
+    }
+
 
     /**
      * @Route("/api/V1/offer")
@@ -26,9 +47,27 @@ class OfferController extends Controller
 
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $offerRepository->saveOffer($params);
+        $id = $offerRepository->saveOffer($params);
 
-        return new Response('Its probably been saved', 201);
+        return new Response(json_encode(["id" => $id]), 201);
+    }
+
+
+    /**
+     * @Route("/api/V1/offer")
+     * @Method("PUT")
+     * @param Request $request
+     * @return Response
+     */
+    public function editAction(Request $request)
+    {
+        $params = json_decode($request->getContent(), true);
+
+        /** @var OfferRepository $offerRepository */
+        $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
+        $id = $offerRepository->updateOffer($params);
+
+        return new Response(json_encode(["id" => $id]), 201);
     }
 
     /**
