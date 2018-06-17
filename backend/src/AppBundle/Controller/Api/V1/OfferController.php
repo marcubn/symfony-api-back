@@ -14,7 +14,7 @@ class OfferController extends Controller
 {
 
     /**
-     * @Route("/api/V1/offer/delete")
+     * @Route("/api/V1/offer")
      * @Method("DELETE")
      * @param Request $request
      *

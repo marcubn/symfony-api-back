@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\ApiService;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,17 +28,7 @@ class OfferController extends Controller
      */
     public function indexAction()
     {
-        $url = 'http://127.0.0.1:8000/api/V1/offer';
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'GET',
-                'content' => "",
-            ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        $results = json_decode($result);
+        $results = ApiService::call();
 
         $offers = [];
         foreach ($results as $result) {
@@ -74,21 +65,8 @@ class OfferController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $savedData = $request->request->all();
-            $data = $savedData['offer'];
-            $url = 'http://127.0.0.1:8000/api/V1/offer';
-
-            $options = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => json_encode($data),
-                ),
-            );
-            $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
-            $results = json_decode($result);
+            $data = $offer->toArray();
+            $results = ApiService::call("POST", $data);
             
             $editLink = $this->generateUrl('offer_edit', array('id' => $results->id));
             $this->get('session')->getFlashBag()->add('success', "<a href='$editLink'>New offer was created successfully.</a>" );
@@ -134,12 +112,11 @@ class OfferController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($offer);
-            $em->flush();
+            $data = $offer->toArray();
+            $results = ApiService::call("PUT", $data);
             
             $this->get('session')->getFlashBag()->add('success', 'Edited Successfully!');
-            return $this->redirectToRoute('offer_edit', array('id' => $offer->getId()));
+            return $this->redirectToRoute('offer_edit', array('id' => $results->id));
         }
         return $this->render('offer/edit.html.twig', array(
             'offer' => $offer,
@@ -158,17 +135,8 @@ class OfferController extends Controller
      */
     public function deleteByIdAction(Offer $offer)
     {
-        $url = 'http://127.0.0.1:8000/api/V1/offer/delete';
-
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'DELETE',
-                'content' => json_encode(["id" => $offer->getId()]),
-            ),
-        );
-        $context  = stream_context_create($options);
-        file_get_contents($url, false, $context);
+        $data = ["id" => $offer->getId()];
+        $results = ApiService::call('DELETE', $data);
         $this->get('session')->getFlashBag()->add('success', 'The Offer was deleted successfully');
 
         return $this->redirect($this->generateUrl('offer'));
@@ -184,31 +152,7 @@ class OfferController extends Controller
      *
      * @return RedirectResponse
      */
-    public function bulkAction(Request $request)
-    {
-        $ids = $request->get("ids", array());
-        $action = $request->get("bulk_action", "delete");
-
-        if ($action == "delete") {
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $repository = $em->getRepository('AppBundle:Offer');
-
-                foreach ($ids as $id) {
-                    $offer = $repository->find($id);
-                    $em->remove($offer);
-                    $em->flush();
-                }
-
-                $this->get('session')->getFlashBag()->add('success', 'offers was deleted successfully!');
-
-            } catch (Exception $ex) {
-                $this->get('session')->getFlashBag()->add('error', 'Problem with deletion of the offers ');
-            }
-        }
-
-        return $this->redirect($this->generateUrl('offer'));
-    }
+    public function bulkAction(Request $request) {}
 
 
 }
