@@ -1,58 +1,64 @@
 {% extends '@crudgeneratorbundle/base.html.twig' %}
 
 {% block title %}
-{{ parent() }} - New offer
+    Add new offer
 {% endblock %}
 
 {% block body %}
 
-<div id="top" class="row">
-    <div class="page-header">
-        <h2>New offer <span class="glyphicon glyphicon-file" aria-hidden="true"></span> </h2>
-    </div>
-</div>
-    
-    
-    
-<div class="row">
-    <div class="row">
-    <div class="col-md-12">
-        {% for type, flashMessages in app.session.flashbag.all() %} 
-        {% for flashMessage in flashMessages %}
-        <div class="alert alert-{{ type }}">
-            {{ flashMessage|raw }}
+    {% if app.user == null %}
+        <a href="/login" class="btn btn-info"> You need to login first</a>
+        <a href="/register" class="btn btn-success"> Or register as a new user</a>
+    {% endif %}
+
+    {% if app.user != null %}
+        <div id="top" class="row">
+            <div class="page-header">
+                <h2>New offer <span class="glyphicon glyphicon-file" aria-hidden="true"></span> </h2>
+            </div>
         </div>
-         {% endfor %} 
-         {% endfor %} 
-    </div>
-</div>
-    
-
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <p>
-        <button type="submit" name="submit" value="save" class="btn btn-primary"> 
-            Save <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-        </button>
-        <button type="submit" name="submit" value="saveAndAdd" class="btn btn-info"> 
-            Save and Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </button>
-    </p>
 
 
-    {{ form_end(form) }}
 
-    <hr/>
+        <div class="row">
+            <div class="row">
+            <div class="col-md-12">
+                {% for type, flashMessages in app.session.flashbag.all() %}
+                {% for flashMessage in flashMessages %}
+                <div class="alert alert-{{ type }}">
+                    {{ flashMessage|raw }}
+                </div>
+                 {% endfor %}
+                 {% endfor %}
+            </div>
+        </div>
 
-<div class="form-group">
-    <a class="btn btn-default" href="{{ path('offer') }}">
-        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-        Back to list
-    </a>
-</div>
 
-</div>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <p>
+                <button type="submit" name="submit" value="save" class="btn btn-primary">
+                    Save <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+                </button>
+                <button type="submit" name="submit" value="saveAndAdd" class="btn btn-info">
+                    Save and Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+            </p>
 
+
+            {{ form_end(form) }}
+
+            <hr/>
+
+        <div class="form-group">
+            <a class="btn btn-default" href="{{ path('offer') }}">
+                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                Back to list
+            </a>
+        </div>
+
+        </div>
+    {% endif %}
 
 {% endblock %}
 

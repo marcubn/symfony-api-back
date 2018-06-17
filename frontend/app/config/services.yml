@@ -4,6 +4,9 @@ parameters:
     #parameter_name: value
 
 services:
+    app.form_login_authenticator:
+        class: AppBundle\Security\FormLoginAuthenticator
+        arguments: ["@router", "@security.password_encoder"]
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
