@@ -14,9 +14,23 @@ Backend (running on http://127.0.0.1:8000 - php bin/console server:start):
 - receives api calls for:
     - getting all offers from DB - GET - api/V1/offer
     - getting one offer based on id - GET - api/V1/offer/{$id}
+            - returns error if:
+                    - offer with this id is not found
     - adding a new offer - POST - api/V1/offer
+            - receives json with mandatory data: {title, description, email, imageUrl}
+            - returns error if:
+                    - email already in use
+                    - one of the mandatory fields is empty
     - updating a new offer - PUT - api/V1/offer
+            - receives json with mandatory data: {id, title, description, email, imageUrl}
+            - returns error if:
+                    - email already in use by other offer than the current id
+                    - one of the mandatory fields is empty
+                    - offer with this id is not found
     - deleting an offer - DELETE - api/V1/offer
+            - receives json with mandatory data: {id}
+            - returns error if:
+                    - offer with this id is not found
     
 Frontend (running on http://127.0.0.1:8080 - php bin/console server:start http://127.0.0.1:8080):
 - sends api calls to backend to get information about:
