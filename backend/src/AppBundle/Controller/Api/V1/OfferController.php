@@ -28,10 +28,9 @@ class OfferController extends Controller
         $id = $params['id'];
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $offerRepository->deleteOffer($id);
+        $response = $offerRepository->deleteOffer($id);
 
-
-        return new Response("Offer was deleted", 200);
+        return new Response($response['msg'], $response['code']);
     }
 
 
@@ -47,9 +46,9 @@ class OfferController extends Controller
 
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $id = $offerRepository->saveOffer($params);
+        $response = $offerRepository->saveOffer($params);
 
-        return new Response(json_encode(["id" => $id]), 201);
+        return new Response($response['msg'], $response['code']);
     }
 
 
@@ -65,9 +64,9 @@ class OfferController extends Controller
 
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $id = $offerRepository->updateOffer($params);
+        $response = $offerRepository->updateOffer($params);
 
-        return new Response(json_encode(["id" => $id]), 201);
+        return new Response($response['msg'], $response['code']);
     }
 
     /**
@@ -80,9 +79,9 @@ class OfferController extends Controller
     {
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $offer = $offerRepository->getOffer($id);
+        $response = $offerRepository->getOffer($id);
 
-        return new Response(json_encode($offer));
+        return new Response($response['msg'], $response['code']);
     }
 
     /**
@@ -94,8 +93,8 @@ class OfferController extends Controller
     {
         /** @var OfferRepository $offerRepository */
         $offerRepository = $this->getDoctrine()->getRepository('AppBundle:Offer');
-        $offers = $offerRepository->getOffers();
+        $response = $offerRepository->getOffers();
 
-        return new Response(json_encode($offers));
+        return new Response($response['msg'], $response['code']);
     }
 }
