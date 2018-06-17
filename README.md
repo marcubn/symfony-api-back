@@ -4,6 +4,8 @@
 3. For the 'frontend' application - replace calls to db for authentication with api cals to 'backend'
 4. More unitTests for backend
 
+Some screen shots with the admin can be seen here: https://github.com/marcubn/symfony-api-back/wiki
+
 
 Two symfony (3.4) applications. One for 'backend' and one for 'frontend'
 For the momment installed locally
